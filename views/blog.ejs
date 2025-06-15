@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title><%= blog.title %> | My Blog</title>
+    <style>
+        body {
+            background-color: #F7CFD8;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+        .main-content {
+            flex: 1;
+            padding-right: 2rem;
+        }
+        .blog-header {
+            padding: 2rem 0 1rem 3rem;
+            max-width: 800px;
+        }
+        .blog-title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 4rem;
+            margin: 0;
+            color: black;
+            font-weight: 700;
+        }
+        .blog-meta {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .image-card {
+            background: #fff;
+            border-radius: 8px;
+            margin: 1rem 3rem;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+        }
+        .blog-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .blog-body {
+            padding: 2rem 3rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: black;
+            max-width: 800px;
+        }
+        .author-card {
+            width: 25%;
+            min-width: 250px;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem;
+            margin-top:10rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: fit-content;
+        }
+        .author-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #F7CFD8;
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .author-content {
+            margin-top: 60px;
+            text-align: center;
+        }
+        .author-name {
+            font-weight: bold;
+            color: #d6336c;
+            margin-bottom: 0.5rem;
+        }
+        .author-greeting {
+            color: #666;
+            font-size: 0.9rem;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Comments Section Styles */
+        .comments-section {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+        .comments-title {
+            font-size: 1.8rem;
+            color: black;
+            margin-bottom: 1.5rem;
+            font-family: 'recoleta-web';
+            font-weight: 600;
+        }
+        .comment-form {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .comment-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .comment-submit {
+            background-color: #d6336c;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .comment-submit:hover {
+            background-color: #c2255c;
+        }
+        .comment-list {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .comment-item {
+            display: flex;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        .comment-content {
+            flex: 1;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: #d6336c;
+            margin-bottom: 0.3rem;
+        }
+        .comment-text {
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+        .comment-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        .no-comments {
+            color: #666;
+            text-align: center;
+            padding: 1rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+            .author-card {
+                width: calc(100% - 3rem);
+                margin: 1rem auto;
+                order: -1;
+            }
+            .main-content {
+                padding-right: 0;
+            }
+            .blog-header,
+            .blog-body,
+            .image-card,
+            .comments-section {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        @media (max-width: 768px) {
+            .blog-header,
+            .blog-body,
+            .comments-section {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            .image-card {
+                margin: 1rem auto;
+                width: calc(100% - 3rem);
+            }
+            .blog-title {
+                font-size: 2.5rem;
+            }
+            .author-card {
+                min-width: auto;
+            }
+            .comments-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-content">
+        <div class="blog-header">
+            <h1 class="blog-title"><%= blog.title %></h1>
+            <div class="blog-meta">
+                Published on: <span><%= new Date(blog.createdAt).toLocaleDateString() %></span>
+            </div>
+        </div>
+        
+        <% if(blog.coverimage) { %>
+            <div class="image-card">
+                <img src="<%= blog.coverimage %>" alt="Blog cover image" class="blog-image">
+            </div>
+        <% } %>
+        
+        <div class="blog-body">
+            <%= blog.body %>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="comments-section">
+             <% if(locals.user){%>
+            <h2 class="comments-title">Comments (<%=comments.length%>)</h2>
+            
+            <!-- Comment Form -->
+            <form action="/blog/comment/<%=blog._id%>" method="post" class="comment-form">
+                <input type="text" class="comment-input" name="content" placeholder="Share your thoughts...">
+                <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+       <% }%>
+            <!-- Comments List -->
+            <div class="comment-list">
+                <% if (comments.length > 0) { %>
+                    <% comments.forEach(comment => { %>
+                        <div class="comment-item">
+                            <% if (comment.createdBy.profileImage) { %>
+                                <img src="<%= comment.createdBy.profileImage %>" alt="<%= comment.createdBy.fullname %>" class="comment-avatar">
+                            <% } else { %>
+                                <div class="comment-avatar" style="background-color: #F7CFD8; display: flex; align-items: center; justify-content: center; color: #d6336c; font-weight: bold;">
+                                    <%= comment.createdBy.fullname.charAt(0).toUpperCase() %>
+                                </div>
+                            <% } %>
+                            <div class="comment-content">
+                                <div class="comment-author"><%= comment.createdBy.fullname %></div>
+                                <p class="comment-text"><%= comment.content %></p>
+                                <div class="comment-date">
+                                    <%= new Date(comment.createdAt).toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'short', 
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                        <% } else { %>
+                            <div class="no-comments">No comments yet. Be the first to share your thoughts!</div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                </div>
+    
+    <div class="author-card">
+        <% if(blog.createdBy.profileImage) { %>
+            <img src="<%= blog.createdBy.profileImage %>" alt="Author image" class="author-image">
+        <% } %>
+        <div class="author-content">
+            <div class="author-name"><%= blog.createdBy.fullname %></div>
+            <div class="author-greeting">Nice to see you here!</div>
+        </div>
+    </div>
+    <%- include("./partials/scripts") %>
+</body>
+</html>
