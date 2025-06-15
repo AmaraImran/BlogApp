@@ -1,6 +1,5 @@
 const {Schema,model}=require('mongoose');
 const {createHmac,randomBytes}=require('crypto');
-const { use } = require('react');
 const{generateToken}=require('../services/authentication')
 const userSchema=new Schema({
     fullname:{
