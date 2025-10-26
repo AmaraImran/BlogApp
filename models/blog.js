@@ -1,5 +1,5 @@
 const{Schema,model}=require('mongoose');
-const { string } = require('yup');
+
 const blogSchema=new Schema({
     title:{type:String,required:true},
     body:{type:String,required:true},

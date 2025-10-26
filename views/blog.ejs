@@ -46,7 +46,7 @@
 .blog-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* crop image instead of stretching */
+    object-fit: contain; /* crop image instead of stretching */
     display: block;
 }
 
@@ -237,7 +237,7 @@
         
         <% if(blog.coverimage) { %>
             <div class="image-card">
-                <img src="<%= blog.coverimage %>" alt="Blog cover image" class="blog-image">
+                <img src="<%= blog.coverimage %>" alt="Blog cover image" class="blog-image" >
             </div>
         <% } %>
         
