@@ -6,9 +6,13 @@ const cookieparser=require('cookie-parser')
 const { checkforauthenticationToken } = require('./middlewares/authentication')
 const blog=require('./models/blog')
 const  app= express()
-mongoose.connect(process.env.MONGO_URL).then(()=>{
-    console.log('Database connected successfully');
+mongoose.connect(process.env.MONGO_URL, {
+  serverSelectionTimeoutMS: 5000, // 5 seconds
+  socketTimeoutMS: 45000,         // 45 seconds
 })
+  .then(() => console.log('✅ Database connected successfully'))
+  .catch(err => console.error('❌ MongoDB connection failed:', err.message));
+
 app.use(express.urlencoded({extended:true}))
 app.use(cookieparser())
 app.use(checkforauthenticationToken("token"))
