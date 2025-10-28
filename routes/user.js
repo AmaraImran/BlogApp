@@ -7,18 +7,23 @@ router.get('/signin',(req,res)=>{
 router.get('/signup',(req,res)=>{
    res.render('signup')
 })
-router.post('/signin',async(req,res)=>{
-    const{email,password}=req.body
-    try {
-     const user=await User.loginWithEmailAndPassword(email,password)
-console.log("user",user)
-return res.cookie("token",user).redirect('/')
-    
-    } catch (error) {
-        console.error("Login error:", error);
-        return res.render('signin', { error: "Invalid email or password" });
-    }
-})
+router.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const token = await User.loginWithEmailAndPassword(email, password);
+    console.log("Generated token:", token);
+
+    res.cookie("token", token, {
+      httpOnly: true, // protects cookie from client-side JS
+    });
+
+    return res.redirect('/');  // ✅ redirect after setting cookie
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.render('signin', { error: "Invalid email or password" });
+  }
+});
 router.post('/signup', async (req, res) => {
   const { fullname, email, password } = req.body;
 
