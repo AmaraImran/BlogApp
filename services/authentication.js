@@ -1,8 +1,16 @@
 const jwt = require("jsonwebtoken");
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || "defaultsecret";
 
 function generateToken(user) {
-  return jwt.sign(user, secret, { expiresIn: "1d" });
+  // Convert user to a plain object or pick only the needed fields
+  const payload = {
+    _id: user._id.toString(),
+    email: user.email,
+    profileImage: user.profileImage,
+    role: user.role
+  };
+
+  return jwt.sign(payload, secret, { expiresIn: "1d" });
 }
 
 function validateToken(token) {
