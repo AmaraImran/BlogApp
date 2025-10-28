@@ -1,17 +1,12 @@
-const jwt=require('jsonwebtoken');
-const secret=process.env.JWT_SECRET
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET;
+
 function generateToken(user) {
-    const payload={
-        _id:user._id,
-        email:user.email,
-        profileImage:user.profileImage,
-        role:user.role
-    };
-    const token=jwt.sign(payload,secret)
-    return token;
+  return jwt.sign(user, secret, { expiresIn: "1d" });
 }
-const validateToken=(token)=>{
-    const payload=jwt.verify(token,secret)
-    return payload;
+
+function validateToken(token) {
+  return jwt.verify(token, secret);
 }
-module.exports={generateToken,validateToken};
+
+module.exports = { generateToken, validateToken };
