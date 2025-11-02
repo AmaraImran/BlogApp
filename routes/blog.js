@@ -32,23 +32,31 @@ router.get("/:id",async(req,res)=>{
     comments
   })
 })
-router.post('/',upload.single('coverimage'),async (req, res) => {
-  const{title,body}=req.body;
-  if(!title || !body){
-    return res.status(400).send("All fields are required");
+router.post('/', upload.single('coverimage'), async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    if (!title || !body) {
+      return res.status(400).send("All fields are required");
+    }
+    if (!req.user) {
+      return res.status(401).send("You must be logged in");
+    }
+
+    const blog = await blogModel.create({
+      title,
+      body,
+      coverimage: req.file ? `/uploads/${req.file.filename}` : null,
+      createdBy: req.user._id,
+    });
+
+    console.log("Blog created:", blog);
+    res.redirect(`/blog/${blog._id}`);
+  } catch (err) {
+    console.error("Error while creating blog:", err);
+    res.status(500).send("Internal Server Error");
   }
-  const blog=await blogModel.create({
-    title,
-    body,
-    coverimage:`/uploads/${req.file.filename}`,
-    createdBy:req.user._id
-    
-  })
-  console.log(req.body)
-  console.log(req.file)
-  return res.redirect(`/blog/${blog._id}`);
-}
-)
+});
+
 router.post('/comment/:blogId',async(req,res)=>{
 
   await commentModel.create({
